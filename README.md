@@ -1,5 +1,5 @@
 ---
-license: cc-by-nc-4.0
+license: apache-2.0
 language:
 - en
 pipeline_tag: image-text-to-text
@@ -12,10 +12,10 @@ We are excited to announce the continuation and rebranding of our **BLIP series*
 `XGen-MM` is a series of the latest foundational Large Multimodal Models (LMMs) developed by Salesforce AI Research. This series advances upon the successful designs of the `BLIP` series, incorporating fundamental enhancements that ensure a more robust and superior foundation. These models have been trained at scale on high-quality image caption datasets and interleaved image-text data. 
 
 In the v1.1 (08/2024) release, we present a series of XGen-MM models including:
-- Base model `xgen-mm-phi3-mini-base-r-v1.1`
-- Single-image instruct model `xgen-mm-phi3-mini-instruct-r-v1.1`
-- Multi-image instruct model `xgen-mm-phi3-mini-instruct-multi-r-v1.1`
-- DPO instruct model `xgen-mm-phi3-mini-instruct-dpo-r-v1.1`
+- Base model `xgen-mm-phi3-mini-base-r-v1.5`
+- Single-image instruct model `xgen-mm-phi3-mini-instruct-r-v1.5`
+- Multi-image instruct model `xgen-mm-phi3-mini-instruct-multi-r-v1.5`
+- DPO instruct model `xgen-mm-phi3-mini-instruct-dpo-r-v1.5`
 
 In addition to the models, we are also releasing a series of datasets for multi-modal pre-training, including:
 - [MINT-1T: Scaling Open-Source Multimodal Data by 10x: A Multimodal Dataset with One Trillion Tokens](https://arxiv.org/abs/2406.11271)
