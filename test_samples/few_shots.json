@@ -1,0 +1,22 @@
+{
+    "example_1": {
+        "image_path": "./test_samples/images/COCO_val2014_000000486568.jpg",
+        "instruction": "A short description of this image in one sentence:",
+        "output": "A man in a suit holding something in his office."
+    },
+    "example_2": {
+        "image_path": "./test_samples/images/COCO_val2014_000000176466.jpg",
+        "instruction": "A short description of this image in one sentence:",
+        "output": "The young girl is standing by the fire hydrant in curlers."
+    },
+    "example_3": {
+        "image_path": "./test_samples/images/COCO_val2014_000000392640.jpg",
+        "instruction": "A short description of this image in one sentence:",
+        "output": "A man with a skateboard that is jumping in the air."
+    },
+    "example_4": {
+        "image_path": "./test_samples/images/COCO_val2014_000000267408.jpg",
+        "instruction": "A short description of this image in one sentence:",
+        "output": "A few people looking at a television that's next to a laptop."
+    }
+}

@@ -1,0 +1,24 @@
+{
+  "auto_map": {
+    "AutoImageProcessor": "image_processing_blip_3.Blip3ImageProcessor"
+  },
+  "do_resize": true,
+  "grids": null,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_processor_type": "Blip3ImageProcessor",
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "interpolation_mode": "bicubic",
+  "resize_mode": "squash",
+  "size": [
+    384,
+    384
+  ]
+}
