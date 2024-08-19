@@ -7,9 +7,7 @@ pipeline_tag: image-text-to-text
 
 
 # Model description
-We are excited to announce the continuation and rebranding of our **BLIP series** into **XGen-MM**, to be better aligned with Salesforce's unified XGen initiative for large foundation models! This rebranding marks a significant step in our ongoing development of cutting-edge multimodal technologies.
-
-`XGen-MM` is a series of the latest foundational Large Multimodal Models (LMMs) developed by Salesforce AI Research. This series advances upon the successful designs of the `BLIP` series, incorporating fundamental enhancements that ensure a more robust and superior foundation. These models have been trained at scale on high-quality image caption datasets and interleaved image-text data. 
+`xGen-MM` is a series of the latest foundational Large Multimodal Models (LMMs) developed by Salesforce AI Research. This series advances upon the successful designs of the `BLIP` series, incorporating fundamental enhancements that ensure a more robust and superior foundation. These models have been trained at scale on high-quality image caption datasets and interleaved image-text data. 
 
 In the v1.5 (08/2024) release, we present a series of XGen-MM models including:
 - [🤗 xGen-MM-base](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-base-r-v1.5): `xgen-mm-phi3-mini-base-r-v1.5`
@@ -23,7 +21,7 @@ In addition to the models, we are also releasing a series of datasets for multi-
 - [🤗 BLIP3-GROUNDING-50M](https://huggingface.co/datasets/Salesforce/blip3-grounding-50m): a dataset for enhancing the ability to ground semantic concepts in images.
 - BLIP3-KALE-300M (stay tuned): a large-scale curated high-quality caption dataset. 
 
-For more details, check out our [tech report]() and project page (coming soon).
+For more details, check out our [tech report](https://arxiv.org/pdf/2408.08872) and project page (coming soon).
 
 # Data
 The base model is pre-trained on a mixture of data sources described above, with around 100 billion image-text tokens in total.
@@ -61,7 +59,7 @@ Below are some qualitative examples below of the mutli-modal in-context learning
 
 # How to use
 
-Please check out our [inference notebook](demo.ipynb) for example code to use our model. We also provide example script for [batch inference](batch_inference.ipynb).
+Please check out our [inference notebook](demo.ipynb) for example code to use our model.
 
 # Reproducibility: 
 
@@ -77,7 +75,7 @@ We strongly recommend users assess safety and fairness before applying to downst
 
 # License
 
-Our code and weights are released under the Creative Commons Attribution Non Commercial 4.0 [LICENSE](LICENSE.txt). Please fill out a form at [here](https://forms.gle/ffPc9oZC2ZGeJ1N68) to consult the commercial use of model weights.
+Our code and weights are released under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
 # Code acknowledgement
 Our training code is based on [OpenFlamingo: An open-source framework for training large multimodal models.](https://github.com/mlfoundations/open_flamingo), and part of our data preprocessing code is adapted from [LLaVA](https://github.com/haotian-liu/LLaVA).
@@ -88,14 +86,15 @@ We thank the authors for their open-source implementations.
 
 # Citation
 ```
-@misc{xgen_mm_phi3_mini,
-    title={xgen-mm-phi3-mini-base Model Card},
-    url={https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-r-v1},
-    author={Salesforce AI Research},
-    month={May},
-    year={2024}
+@article{blip3-xgenmm,
+  author    = {Le Xue, Manli Shu, Anas Awadalla, Jun Wang, An Yan, Senthil Purushwalkam, Honglu Zhou, Viraj Prabhu, Yutong Dai, Michael S Ryoo, Shrikant Kendre, Jieyu Zhang, Can Qin, Shu Zhang, Chia-Chih Chen, Ning Yu, Juntao Tan, Tulika Manoj Awalgaonkar, Shelby Heinecke, Huan Wang, Yejin Choi, Ludwig Schmidt, Zeyuan Chen, Silvio Savarese, Juan Carlos Niebles, Caiming Xiong, Ran Xu},
+  title     = {xGen-MM(BLIP-3): A Family of Open Large Multimodal Models},
+  journal   = {arXiv preprint},
+  month     = {August},
+  year      = {2024},
 }
 ```
+
 
 # Troubleshoot
 
