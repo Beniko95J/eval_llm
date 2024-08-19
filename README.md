@@ -11,17 +11,17 @@ pipeline_tag: image-text-to-text
 
 In the v1.5 (08/2024) release, we present a series of XGen-MM models including:
 - [🤗 xGen-MM-base](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-base-r-v1.5): `xgen-mm-phi3-mini-base-r-v1.5`
-- [🤗 xGen-MM-instruct](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-r-v1.5): `xgen-mm-phi3-mini-instruct-r-v1.5`
-- [🤗 xGen-MM-instruct-interleave](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-multi-r-v1.5): `xgen-mm-phi3-mini-instruct-multi-r-v1.5`
+- [🤗 xGen-MM-instruct](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-singleimg-r-v1.5): `xgen-mm-phi3-mini-instruct-singleimg-r-v1.5`
+- [🤗 xGen-MM-instruct-interleave (our main instruct model)](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-multi-r-v1.5): `xgen-mm-phi3-mini-instruct-interleave-r-v1.5`
 - [🤗 xGen-MM-instruct-dpo](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-dpo-r-v1.5): `xgen-mm-phi3-mini-instruct-dpo-r-v1.5`
 
-In addition to the models, we are also releasing a series of datasets for multi-modal pre-training, including:
+In addition to the models, our team also released a series of datasets for multi-modal pre-training, including:
 - [🍃 MINT-1T: Scaling Open-Source Multimodal Data by 10x: A Multimodal Dataset with One Trillion Tokens](https://arxiv.org/abs/2406.11271)
 - [🤗 BLIP3-OCR-200M](https://huggingface.co/datasets/Salesforce/blip3-ocr-200m): a dataset with dense OCR annotations.
 - [🤗 BLIP3-GROUNDING-50M](https://huggingface.co/datasets/Salesforce/blip3-grounding-50m): a dataset for enhancing the ability to ground semantic concepts in images.
-- BLIP3-KALE-300M (stay tuned): a large-scale curated high-quality caption dataset. 
+- BLIP3-KALE (stay tuned): a large-scale curated high-quality caption dataset. 
 
-For more details, check out our [tech report](https://arxiv.org/pdf/2408.08872) and project page (coming soon).
+For more details, check out our [tech report](https://arxiv.org/pdf/2408.08872), [fine-tuning code](https://github.com/salesforce/LAVIS/tree/xgen-mm), and project page (coming soon).
 
 # Data
 The base model is pre-trained on a mixture of data sources described above, with around 100 billion image-text tokens in total.
