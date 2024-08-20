@@ -18,8 +18,8 @@ In the v1.5 (08/2024) release, we present a series of XGen-MM models including:
 
 In addition to the models, our team also released a series of datasets for multi-modal pre-training, including:
 - [🍃 MINT-1T: Scaling Open-Source Multimodal Data by 10x: A Multimodal Dataset with One Trillion Tokens](https://arxiv.org/abs/2406.11271)
-- [🤗 BLIP3-OCR-200M](https://huggingface.co/datasets/Salesforce/blip3-ocr-200m): a dataset with dense OCR annotations.
-- [🤗 BLIP3-GROUNDING-50M](https://huggingface.co/datasets/Salesforce/blip3-grounding-50m): a dataset for enhancing the ability to ground semantic concepts in images.
+- [🤗 BLIP3-OCR-200M (coming soon)](https://huggingface.co/datasets/Salesforce/blip3-ocr-200m): a dataset with dense OCR annotations.
+- [🤗 BLIP3-GROUNDING-50M (coming soon)](https://huggingface.co/datasets/Salesforce/blip3-grounding-50m): a dataset for enhancing the ability to ground semantic concepts in images.
 - BLIP3-KALE (stay tuned): a large-scale curated high-quality caption dataset. 
 
 For more details, check out our [tech report](https://arxiv.org/pdf/2408.08872), [fine-tuning code](https://github.com/salesforce/LAVIS/tree/xgen-mm), and project page (coming soon).
