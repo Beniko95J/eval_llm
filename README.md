@@ -89,7 +89,7 @@ We thank the authors for their open-source implementations.
 ```
 @misc{blip3-xgenmm,
   author          = {Le Xue, Manli Shu, Anas Awadalla, Jun Wang, An Yan, Senthil Purushwalkam, Honglu Zhou, Viraj Prabhu, Yutong Dai, Michael S Ryoo, Shrikant Kendre, Jieyu Zhang, Can Qin, Shu Zhang, Chia-Chih Chen, Ning Yu, Juntao Tan, Tulika Manoj Awalgaonkar, Shelby Heinecke, Huan Wang, Yejin Choi, Ludwig Schmidt, Zeyuan Chen, Silvio Savarese, Juan Carlos Niebles, Caiming Xiong, Ran Xu},
-  title           = {BLIP-3: A Family of Open Large Multimodal Models},
+  title           = {xGen-MM (BLIP-3): A Family of Open Large Multimodal Models},
   year            = {2024},
   eprint          = {2408.08872},
   archivePrefix   = {arXiv},
