@@ -10,9 +10,10 @@ pipeline_tag: image-text-to-text
 `xGen-MM` is a series of the latest foundational Large Multimodal Models (LMMs) developed by Salesforce AI Research. This series advances upon the successful designs of the `BLIP` series, incorporating fundamental enhancements that ensure a more robust and superior foundation. These models have been trained at scale on high-quality image caption datasets and interleaved image-text data. 
 
 In the v1.5 (08/2024) release, we present a series of XGen-MM models including:
+- [🤗 xGen-MM-instruct-interleave (our main instruct model)](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-multi-r-v1.5): `xgen-mm-phi3-mini-instruct-interleave-r-v1.5`
+  - This model has higher overall scores than [xGen-MM-instruct](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-singleimg-r-v1.5) on both single-image and multi-image benchmarks.
 - [🤗 xGen-MM-base](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-base-r-v1.5): `xgen-mm-phi3-mini-base-r-v1.5`
 - [🤗 xGen-MM-instruct](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-singleimg-r-v1.5): `xgen-mm-phi3-mini-instruct-singleimg-r-v1.5`
-- [🤗 xGen-MM-instruct-interleave (our main instruct model)](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-multi-r-v1.5): `xgen-mm-phi3-mini-instruct-interleave-r-v1.5`
 - [🤗 xGen-MM-instruct-dpo](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-dpo-r-v1.5): `xgen-mm-phi3-mini-instruct-dpo-r-v1.5`
 
 In addition to the models, our team also released a series of datasets for multi-modal pre-training, including:
@@ -44,9 +45,9 @@ The base model is pre-trained on a mixture of data sources described above, with
 |               | 8    | **66.9**| **55.3**| **50.1**| 109.8| 104.6| **94.0**|
 
 
-### Showcases on In-Context Learning
+### Showcases of In-Context Learning
 
-Below are some qualitative examples below of the mutli-modal in-context learning capacity of our base model.
+Below are some qualitative examples of the multi-modal in-context learning capacity of our base model.
 
 <img src="icl_examples/art.png" alt="Art" width=500>
 
@@ -77,7 +78,7 @@ We strongly recommend users assess safety and fairness before applying to downst
 
 Our code and weights are released under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt) license.
 
-# Code acknowledgement
+# Code acknowledgment
 Our training code is based on [OpenFlamingo: An open-source framework for training large multimodal models.](https://github.com/mlfoundations/open_flamingo), and part of our data preprocessing code is adapted from [LLaVA](https://github.com/haotian-liu/LLaVA).
 Our evaluation code is based on [VLMEvalKit: Open-source evaluation toolkit of large vision-language models (LVLMs)](https://github.com/open-compass/VLMEvalKit).
 
