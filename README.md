@@ -10,7 +10,7 @@ pipeline_tag: image-text-to-text
 `xGen-MM` is a series of the latest foundational Large Multimodal Models (LMMs) developed by Salesforce AI Research. This series advances upon the successful designs of the `BLIP` series, incorporating fundamental enhancements that ensure a more robust and superior foundation. These models have been trained at scale on high-quality image caption datasets and interleaved image-text data. 
 
 In the v1.5 (08/2024) release, we present a series of XGen-MM models including:
-- [🤗 xGen-MM-instruct-interleave (our main instruct model)](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-multi-r-v1.5): `xgen-mm-phi3-mini-instruct-interleave-r-v1.5`
+- [🤗 xGen-MM-instruct-interleave (our main instruct model)](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-interleave-r-v1.5): `xgen-mm-phi3-mini-instruct-interleave-r-v1.5`
   - This model has higher overall scores than [xGen-MM-instruct](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-singleimg-r-v1.5) on both single-image and multi-image benchmarks.
 - [🤗 xGen-MM-base](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-base-r-v1.5): `xgen-mm-phi3-mini-base-r-v1.5`
 - [🤗 xGen-MM-instruct](https://huggingface.co/Salesforce/xgen-mm-phi3-mini-instruct-singleimg-r-v1.5): `xgen-mm-phi3-mini-instruct-singleimg-r-v1.5`
@@ -87,12 +87,14 @@ We thank the authors for their open-source implementations.
 
 # Citation
 ```
-@article{blip3-xgenmm,
-  author    = {Le Xue, Manli Shu, Anas Awadalla, Jun Wang, An Yan, Senthil Purushwalkam, Honglu Zhou, Viraj Prabhu, Yutong Dai, Michael S Ryoo, Shrikant Kendre, Jieyu Zhang, Can Qin, Shu Zhang, Chia-Chih Chen, Ning Yu, Juntao Tan, Tulika Manoj Awalgaonkar, Shelby Heinecke, Huan Wang, Yejin Choi, Ludwig Schmidt, Zeyuan Chen, Silvio Savarese, Juan Carlos Niebles, Caiming Xiong, Ran Xu},
-  title     = {xGen-MM(BLIP-3): A Family of Open Large Multimodal Models},
-  journal   = {arXiv preprint},
-  month     = {August},
-  year      = {2024},
+@misc{blip3-xgenmm,
+  author          = {Le Xue, Manli Shu, Anas Awadalla, Jun Wang, An Yan, Senthil Purushwalkam, Honglu Zhou, Viraj Prabhu, Yutong Dai, Michael S Ryoo, Shrikant Kendre, Jieyu Zhang, Can Qin, Shu Zhang, Chia-Chih Chen, Ning Yu, Juntao Tan, Tulika Manoj Awalgaonkar, Shelby Heinecke, Huan Wang, Yejin Choi, Ludwig Schmidt, Zeyuan Chen, Silvio Savarese, Juan Carlos Niebles, Caiming Xiong, Ran Xu},
+  title           = {BLIP-3: A Family of Open Large Multimodal Models},
+  year            = {2024},
+  eprint          = {2408.08872},
+  archivePrefix   = {arXiv},
+  primaryClass    = {cs.CV},
+  url             = {https://arxiv.org/abs/2408.08872}, 
 }
 ```
 
