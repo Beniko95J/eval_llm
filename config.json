@@ -3,7 +3,7 @@
     "XGenMMModelForConditionalGeneration"
   ],
   "auto_map": {
-    "AutoConfig": "configuration_xgenmm.XGenMMConfig",
+    "AutoConfig": "modeling_xgenmm.XGenMMConfig",
     "AutoModelForVision2Seq": "modeling_xgenmm.XGenMMModelForConditionalGeneration"
   },
   "model_type": "xgenmm",

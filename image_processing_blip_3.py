@@ -1,10 +1,19 @@
 import random
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 import torchvision.transforms.functional as F
-from torchvision.transforms import Normalize, Compose, RandomResizedCrop, InterpolationMode, ToTensor, Resize, \
-    CenterCrop, ColorJitter, Grayscale
+from torchvision.transforms import (
+    Normalize,
+    Compose,
+    RandomResizedCrop,
+    InterpolationMode,
+    ToTensor,
+    Resize,
+    CenterCrop,
+    ColorJitter,
+    Grayscale,
+)
 import numbers
-import torch    
+import torch
 import ast
 import math
 import numpy as np
@@ -13,11 +22,23 @@ from transformers.image_processing_utils import BaseImageProcessor, BatchFeature
 from transformers.image_utils import ImageInput
 from transformers.utils import TensorType
 
-from utils import expand2square
 
-    
+def expand2square(pil_img, background_color):
+    width, height = pil_img.size
+    if width == height:
+        return pil_img
+    elif width > height:
+        result = Image.new(pil_img.mode, (width, width), background_color)
+        result.paste(pil_img, (0, (width - height) // 2))
+        return result
+    else:
+        result = Image.new(pil_img.mode, (height, height), background_color)
+        result.paste(pil_img, ((height - width) // 2, 0))
+        return result
+
+
 class Blip3ImageProcessor(BaseImageProcessor):
-    
+
     def __init__(
         self,
         do_resize: bool = True,
@@ -37,104 +58,116 @@ class Blip3ImageProcessor(BaseImageProcessor):
 
         self.image_mean = image_mean if image_mean is not None else [0.5, 0.5, 0.5]
         self.image_std = image_std if image_std is not None else [0.5, 0.5, 0.5]
-            
-    
+
     @classmethod
-    def resize(cls, image_size, resize_mode, interpolation='bicubic', fill_color=0):
-        interpolation_mode = InterpolationMode.BILINEAR if interpolation == 'bilinear' else InterpolationMode.BICUBIC
-        if resize_mode == 'longest':
+    def resize(cls, image_size, resize_mode, interpolation="bicubic", fill_color=0):
+        interpolation_mode = (
+            InterpolationMode.BILINEAR
+            if interpolation == "bilinear"
+            else InterpolationMode.BICUBIC
+        )
+        if resize_mode == "longest":
             transforms = [
-                ResizeKeepRatio(image_size, interpolation=interpolation_mode, longest=1),
-                CenterCropOrPad(image_size, fill=fill_color)
+                ResizeKeepRatio(
+                    image_size, interpolation=interpolation_mode, longest=1
+                ),
+                CenterCropOrPad(image_size, fill=fill_color),
             ]
-        elif resize_mode == 'squash':
+        elif resize_mode == "squash":
             if isinstance(image_size, int):
                 image_size = (image_size, image_size)
             transforms = [
                 Resize(image_size, interpolation=interpolation_mode),
             ]
         else:
-            assert resize_mode == 'shortest'
+            assert resize_mode == "shortest"
             if not isinstance(image_size, (tuple, list)):
                 image_size = (image_size, image_size)
             if image_size[0] == image_size[1]:
                 # simple case, use torchvision built-in Resize w/ shortest edge mode (scalar size arg)
-                transforms = [
-                    Resize(image_size[0], interpolation=interpolation_mode)
-                ]
+                transforms = [Resize(image_size[0], interpolation=interpolation_mode)]
             else:
                 # resize shortest edge to matching target dim for non-square target
                 transforms = [ResizeKeepRatio(image_size)]
             transforms += [CenterCrop(image_size)]
         return transforms
-    
+
     @classmethod
     def convert_rgb(cls, image):
         return image.convert("RGB")
-            
 
-    def _preprocess(self, 
-                   images: ImageInput
-                   ) -> torch.Tensor:
-        transforms = self.resize(self.size,  self.resize_mode, self.interpolation_mode)
-        transforms.extend([
-            self.convert_rgb,
-            ToTensor(),
-            Normalize(mean=self.image_mean, std=self.image_std)
-        ])
+    def _preprocess(self, images: ImageInput) -> torch.Tensor:
+        transforms = self.resize(self.size, self.resize_mode, self.interpolation_mode)
+        transforms.extend(
+            [
+                self.convert_rgb,
+                ToTensor(),
+                Normalize(mean=self.image_mean, std=self.image_std),
+            ]
+        )
         composed_transforms = Compose(transforms)
         images_tensor = composed_transforms(images)
-        return images_tensor           
-    
-    def preprocess(self, 
-                   images: ImageInput, 
-                   return_tensors: Optional[Union[str, TensorType]] = None,
-                   **kwargs) -> BatchFeature:
-        if 'image_aspect_ratio' in kwargs:
-            image_aspect_ratio = kwargs['image_aspect_ratio']
+        return images_tensor
+
+    def preprocess(
+        self,
+        images: ImageInput,
+        return_tensors: Optional[Union[str, TensorType]] = None,
+        **kwargs,
+    ) -> BatchFeature:
+        if "image_aspect_ratio" in kwargs:
+            image_aspect_ratio = kwargs["image_aspect_ratio"]
         else:
-            image_aspect_ratio = 'none'
+            image_aspect_ratio = "none"
         new_images = []
-        if image_aspect_ratio == 'pad':
+        if image_aspect_ratio == "pad":
             for image in images:
-                image = expand2square(image, tuple(int(x*255) for x in self.image_mean))
+                image = expand2square(
+                    image, tuple(int(x * 255) for x in self.image_mean)
+                )
                 image = self._preprocess(image)
                 new_images.append(image)
-        elif image_aspect_ratio == 'anyres':
+        elif image_aspect_ratio == "anyres":
             for image in images:
-                image = process_anyres_image(image, self._preprocess, self.size,
-                                             self.grids)
+                image = process_anyres_image(
+                    image, self._preprocess, self.size, self.grids
+                )
                 new_images.append(image)
         else:
             for image in images:
                 image = self._preprocess(image)
                 new_images.append(image)
-        
+
         if all(x.shape == new_images[0].shape for x in new_images):
             new_images = torch.stack(new_images, dim=0)
-        if image_aspect_ratio == 'anyres':
-            new_images = BatchFeature(data={"pixel_values": new_images}, tensor_type=return_tensors)
+        if image_aspect_ratio == "anyres":
+            new_images = BatchFeature(
+                data={"pixel_values": new_images}, tensor_type=return_tensors
+            )
         else:
-            new_images = BatchFeature(data={"pixel_values": new_images.unsqueeze(1).unsqueeze(0)}, tensor_type=return_tensors)
-            
+            new_images = BatchFeature(
+                data={"pixel_values": new_images.unsqueeze(1).unsqueeze(0)},
+                tensor_type=return_tensors,
+            )
+
         return new_images
 
-    
+
 class ResizeKeepRatio:
-    """ Resize and Keep Ratio
+    """Resize and Keep Ratio
 
     Copy & paste from `timm`
     """
 
     def __init__(
-            self,
-            size,
-            longest=0.,
-            interpolation=InterpolationMode.BICUBIC,
-            random_scale_prob=0.,
-            random_scale_range=(0.85, 1.05),
-            random_aspect_prob=0.,
-            random_aspect_range=(0.9, 1.11)
+        self,
+        size,
+        longest=0.0,
+        interpolation=InterpolationMode.BICUBIC,
+        random_scale_prob=0.0,
+        random_scale_range=(0.85, 1.05),
+        random_aspect_prob=0.0,
+        random_aspect_range=(0.9, 1.11),
     ):
         if isinstance(size, (list, tuple)):
             self.size = tuple(size)
@@ -149,30 +182,36 @@ class ResizeKeepRatio:
 
     @staticmethod
     def get_params(
-            img,
-            target_size,
-            longest,
-            random_scale_prob=0.,
-            random_scale_range=(0.85, 1.05),
-            random_aspect_prob=0.,
-            random_aspect_range=(0.9, 1.11)
+        img,
+        target_size,
+        longest,
+        random_scale_prob=0.0,
+        random_scale_range=(0.85, 1.05),
+        random_aspect_prob=0.0,
+        random_aspect_range=(0.9, 1.11),
     ):
-        """Get parameters
-        """
+        """Get parameters"""
         source_size = img.size[::-1]  # h, w
         h, w = source_size
         target_h, target_w = target_size
         ratio_h = h / target_h
         ratio_w = w / target_w
-        ratio = max(ratio_h, ratio_w) * longest + min(ratio_h, ratio_w) * (1. - longest)
+        ratio = max(ratio_h, ratio_w) * longest + min(ratio_h, ratio_w) * (
+            1.0 - longest
+        )
         if random_scale_prob > 0 and random.random() < random_scale_prob:
             ratio_factor = random.uniform(random_scale_range[0], random_scale_range[1])
             ratio_factor = (ratio_factor, ratio_factor)
         else:
-            ratio_factor = (1., 1.)
+            ratio_factor = (1.0, 1.0)
         if random_aspect_prob > 0 and random.random() < random_aspect_prob:
-            aspect_factor = random.uniform(random_aspect_range[0], random_aspect_range[1])
-            ratio_factor = (ratio_factor[0] / aspect_factor, ratio_factor[1] * aspect_factor)
+            aspect_factor = random.uniform(
+                random_aspect_range[0], random_aspect_range[1]
+            )
+            ratio_factor = (
+                ratio_factor[0] / aspect_factor,
+                ratio_factor[1] * aspect_factor,
+            )
         size = [round(x * f / ratio) for x, f in zip(source_size, ratio_factor)]
         return size
 
@@ -185,18 +224,23 @@ class ResizeKeepRatio:
             PIL Image: Resized, padded to at least target size, possibly cropped to exactly target size
         """
         size = self.get_params(
-            img, self.size, self.longest,
-            self.random_scale_prob, self.random_scale_range,
-            self.random_aspect_prob, self.random_aspect_range
+            img,
+            self.size,
+            self.longest,
+            self.random_scale_prob,
+            self.random_scale_range,
+            self.random_aspect_prob,
+            self.random_aspect_range,
         )
         img = F.resize(img, size, self.interpolation)
         return img
 
     def __repr__(self):
-        format_string = self.__class__.__name__ + '(size={0}'.format(self.size)
-        format_string += f', interpolation={self.interpolation})'
-        format_string += f', longest={self.longest:.3f})'
+        format_string = self.__class__.__name__ + "(size={0}".format(self.size)
+        format_string += f", interpolation={self.interpolation})"
+        format_string += f", longest={self.longest:.3f})"
         return format_string
+
 
 def _setup_size(size, error_msg):
     if isinstance(size, numbers.Number):
@@ -210,7 +254,10 @@ def _setup_size(size, error_msg):
 
     return size
 
-def center_crop_or_pad(img: torch.Tensor, output_size: List[int], fill=0) -> torch.Tensor:
+
+def center_crop_or_pad(
+    img: torch.Tensor, output_size: List[int], fill=0
+) -> torch.Tensor:
     """Center crops and/or pads the given image.
     If the image is torch Tensor, it is expected
     to have [..., H, W] shape, where ... means an arbitrary number of leading dimensions.
@@ -248,7 +295,8 @@ def center_crop_or_pad(img: torch.Tensor, output_size: List[int], fill=0) -> tor
     crop_top = int(round((image_height - crop_height) / 2.0))
     crop_left = int(round((image_width - crop_width) / 2.0))
     return F.crop(img, crop_top, crop_left, crop_height, crop_width)
-    
+
+
 class CenterCropOrPad(torch.nn.Module):
     """Crops the given image at the center.
     If the image is torch Tensor, it is expected
@@ -263,7 +311,9 @@ class CenterCropOrPad(torch.nn.Module):
 
     def __init__(self, size, fill=0):
         super().__init__()
-        self.size = _setup_size(size, error_msg="Please provide only two dimensions (h, w) for size.")
+        self.size = _setup_size(
+            size, error_msg="Please provide only two dimensions (h, w) for size."
+        )
         self.fill = fill
 
     def forward(self, img):
@@ -278,7 +328,8 @@ class CenterCropOrPad(torch.nn.Module):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(size={self.size})"
-    
+
+
 def process_anyres_image(image, processor, processor_size, grid_pinpoints):
     """
     Process an image with variable resolutions.
@@ -306,9 +357,8 @@ def process_anyres_image(image, processor, processor_size, grid_pinpoints):
     image_original_resize = image.resize((processor_size[0], processor_size[0]))
 
     image_patches = [image_original_resize] + patches
-    image_patches = [processor(image_patch)
-                     for image_patch in image_patches]
-    return torch.stack(image_patches, dim=0)    
+    image_patches = [processor(image_patch) for image_patch in image_patches]
+    return torch.stack(image_patches, dim=0)
 
 
 def select_best_resolution(original_size, possible_resolutions):
@@ -325,20 +375,28 @@ def select_best_resolution(original_size, possible_resolutions):
     original_width, original_height = original_size
     best_fit = None
     max_effective_resolution = 0
-    min_wasted_resolution = float('inf')
+    min_wasted_resolution = float("inf")
 
     for width, height in possible_resolutions:
         scale = min(width / original_width, height / original_height)
-        downscaled_width, downscaled_height = int(original_width * scale), int(original_height * scale)
-        effective_resolution = min(downscaled_width * downscaled_height, original_width * original_height)
+        downscaled_width, downscaled_height = int(original_width * scale), int(
+            original_height * scale
+        )
+        effective_resolution = min(
+            downscaled_width * downscaled_height, original_width * original_height
+        )
         wasted_resolution = (width * height) - effective_resolution
 
-        if effective_resolution > max_effective_resolution or (effective_resolution == max_effective_resolution and wasted_resolution < min_wasted_resolution):
+        if effective_resolution > max_effective_resolution or (
+            effective_resolution == max_effective_resolution
+            and wasted_resolution < min_wasted_resolution
+        ):
             max_effective_resolution = effective_resolution
             min_wasted_resolution = wasted_resolution
             best_fit = (width, height)
 
     return best_fit
+
 
 def resize_and_pad_image(image, target_resolution):
     """
@@ -367,12 +425,13 @@ def resize_and_pad_image(image, target_resolution):
     # Resize the image
     resized_image = image.resize((new_width, new_height))
 
-    new_image = Image.new('RGB', (target_width, target_height), (0, 0, 0))
+    new_image = Image.new("RGB", (target_width, target_height), (0, 0, 0))
     paste_x = (target_width - new_width) // 2
     paste_y = (target_height - new_height) // 2
     new_image.paste(resized_image, (paste_x, paste_y))
 
     return new_image
+
 
 def divide_to_patches(image, patch_size):
     """
