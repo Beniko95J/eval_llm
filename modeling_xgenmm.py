@@ -1510,7 +1510,7 @@ class VLMWithLanguageStream(VLM):
             )
             if has_labels:
                 new_label = labels[i].clone()
-            print(vision_tokens.shape)
+            # print(vision_tokens.shape)
             for img_num, img_idx in enumerate(image_token_idxs):
                 new_embed = torch.cat(
                     (
